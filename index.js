@@ -8,7 +8,7 @@ async function run() {
 
     const tagName = core.getInput('tag_name');
     const name = core.getInput('name');
-    const prerelease = core.getInput('prerelease');
+    const prerelease = core.getInput('prerelease') === 'true';
 
     const { data: release } = await octokit.rest.repos.createRelease({
       owner: github.context.repo.owner,
