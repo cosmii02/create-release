@@ -1,24 +1,24 @@
-name: create-release
+name: 'Create Release'
 
-on:
-  push:
-    tags:
-      - '*'
+description: 'Creates a new release on GitHub'
 
-jobs:
-  create_release:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - name: Create Release
-        id: create_release
-        uses: ./ # Use the current directory for the action
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        with:
-          tag_name: ${{ github.ref }}
-          release_name: Release ${{ github.ref }}
-          body: |
-            This is the release body for ${{ github.ref }}.
-          draft: false
-          prerelease: false
+inputs:
+  tag_name:
+    description: 'The name of the tag associated with this release'
+    required: true
+    default: ${{ github.ref }}
+  name:
+    description: 'The name of the release'
+    required: true
+  prerelease:
+    description: 'Indicates if the release is a prerelease'
+    required: false
+    default: false
+
+runs:
+  using: 'node16'
+  main: 'index.js'
+
+outputs:
+  id:
+    description: 'The ID of the created release'

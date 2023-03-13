@@ -5,20 +5,17 @@ async function run() {
   try {
     const token = core.getInput('token');
     const octokit = github.getOctokit(token);
-    const tag = core.getInput('tag_name');
-    const name = core.getInput('release_name');
-    const body = core.getInput('body');
-    const draft = core.getInput('draft');
+
+    const tagName = core.getInput('tag_name');
+    const name = core.getInput('name');
     const prerelease = core.getInput('prerelease');
 
     const { data: release } = await octokit.rest.repos.createRelease({
       owner: github.context.repo.owner,
       repo: github.context.repo.repo,
-      tag_name: tag,
+      tag_name: tagName,
       name: name,
-      body: body,
-      draft: draft === 'true',
-      prerelease: prerelease === 'true',
+      prerelease: prerelease
     });
 
     core.setOutput('id', release.id);
